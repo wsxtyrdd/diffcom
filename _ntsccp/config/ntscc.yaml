@@ -1,0 +1,10 @@
+#channel:
+channel_type: 'awgn'
+SNR: 10
+
+#trainer
+pretrained: '/media/D/wangsixian/InterPlay/_NTSCC_Improved/checkpoint/ckbd2_lmbd_0.013.pth.tar'
+
+#network:
+net: 'checkboard2'
+eta: 0.2
