@@ -4,7 +4,7 @@ This is the repository of the
 paper "[Perceptual Learned Source-Channel Coding for High-Fidelity Image Semantic Transmission](https://arxiv.org/abs/2205.13120)".
 
 ## Pretrained weights (AWGN 10dB)
-LINK: [Google Drive]({https://drive.google.com/drive/folders/1Bgaons0M8kaz8yYyGgmiDi-9b_3mEgIj?usp=sharing})
+LINK: [Google Drive](https://drive.google.com/drive/folders/1Bgaons0M8kaz8yYyGgmiDi-9b_3mEgIj?usp=sharing)
 
 ## Citation
 
