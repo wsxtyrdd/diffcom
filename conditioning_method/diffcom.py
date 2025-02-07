@@ -27,8 +27,8 @@ class ConsistencyLoss(nn.Module):
     def __init__(self, config, device):
         super().__init__()
         self.config = config
-        zeta = config.getattr(config.conditioning_method)[config.operation_mode]['zeta']
-        gamma = config.getattr(config.conditioning_method)[config.operation_mode]['gamma']
+        zeta = config.diffcom_series[config.conditioning_method]['zeta']
+        gamma = config.diffcom_series[config.conditioning_method]['gamma']
         self.weight = {
             'x_mse': gamma,
             'ofdm_sig': zeta,
@@ -43,11 +43,6 @@ class ConsistencyLoss(nn.Module):
             }
         elif operation_mode == 'pixel':
             recon_measurement = {
-                'x_mse': x_0_hat
-            }
-        elif operation_mode == 'source_align':
-            recon_measurement = {
-                'ofdm_sig': operator.forward(s, cof),
                 'x_mse': x_0_hat
             }
         elif operation_mode == 'joint':
@@ -108,7 +103,7 @@ class DiffCom(nn.Module):
             loss = loss_wrapper.forward(measurement, x_0_hat, h_t, operator, self.conditioning_method)
             total_loss = sum(loss.values())
             x_grad = torch.autograd.grad(outputs=total_loss, inputs=x_t)[0]
-            learning_rate = get_lr(config.getattr(config.conditioning_method)[config.operation_mode], t_step,
+            learning_rate = get_lr(config.diffcom_series[config.conditioning_method], t_step,
                                    ns.t_start - 1)
             x_t_minus_1 = x_t_minus_1_prime - x_grad * learning_rate
             x_t_minus_1 = x_t_minus_1.detach_()
@@ -139,7 +134,7 @@ class BlindDiffCom(DiffCom):
                                                              diffusion=diffusion,
                                                              ddim_sample=config.ddim_sample)
 
-        assert (config.channel_type == 'ofdm_tdl' and config.ofdm['blind'])
+        assert (config.conditioning_method == 'blind_diffcom')
 
         h_t = h_t.requires_grad_()
         h_score = - h_t / (power ** 2)
@@ -155,11 +150,11 @@ class BlindDiffCom(DiffCom):
             loss = loss_wrapper.forward(measurement, x_0_hat, h_0_hat, operator, self.conditioning_method)
             total_loss = sum(loss.values())
             x_grad, h_t_grad = torch.autograd.grad(outputs=total_loss, inputs=[x_t, h_t])
-            learning_rate = config.getattr(config.conditioning_method)[config.operation_mode]['learning_rate']
+            learning_rate = config.diffcom_series['blind_diffcom']['learning_rate']
             learning_rate = (learning_rate - 0) * (t_step / (ns.t_start - 1))
             x_t_minus_1 = x_t_minus_1_prime - x_grad * learning_rate
             x_t_minus_1 = x_t_minus_1.detach_()
-            lr_h = config.ofdm['h_lr']
+            lr_h = config.diffcom_series['blind_diffcom']['h_lr']
             lr_h = (lr_h - 0) * (t_step / (ns.t_start - 1))
             h_t_minus_1 = h_t_minus_1_prime - h_t_grad * lr_h
             h_t_minus_1 = h_t_minus_1.detach_()

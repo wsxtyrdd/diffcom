@@ -12,9 +12,8 @@ class Channel(nn.Module):
         self.logger = logger
         self.rescale = rescale
         if self.logger:
-            sigma = np.sqrt(1.0 / (2 * 10 ** (self.chan_param / 10)))
-            self.logger.info('【Channel】: Built {} channel, SNR {} dB, sigma={}.'.format(
-                channel_type, SNR, sigma))
+            self.logger.info('【Channel】: Built {} channel, SNR {} dB'.format(
+                channel_type, SNR))
 
     def gaussian_noise_layer(self, input_layer, std):
         device = input_layer.get_device()

@@ -98,7 +98,7 @@ class GDN(nn.Module):
 
 
 class AFModule(nn.Module):
-
+    #  Please refer to 'J. Xu, B. Ai, W. Chen et al., “Wireless image transmission using deep source channel coding with attention modules,” IEEE Trans. Circuits Syst. Video Technol., vol. 32, no. 4, pp. 2315–2328, 2021.' for more details.
     def __init__(self, C):
         super(AFModule, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)

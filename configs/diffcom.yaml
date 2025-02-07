@@ -1,0 +1,91 @@
+conditioning_method: 'blind_diffcom'  # 'diffcom', 'hifi_diffcom', 'blind_diffcom'
+
+# config forward operator
+operator_name: 'djscc'  # 'ntscc', 'swinjscc'
+
+djscc:
+  #  The djscc is implemented with SNR attention module, trained under AWGN channel with CSNR in [0, 14] dB.
+  channel_num: 2
+  jscc_model_path: '_djscc/ckpt/ADJSCC_C=2.pth.tar'
+#  channel_num: 4
+#  jscc_model_path: '_djscc/ckpt/ADJSCC_C=4.pth.tar'
+#  channel_num: 6
+#  jscc_model_path: '_djscc/ckpt/ADJSCC_C=6.pth.tar'
+
+ntscc:
+  compatible: True
+  eta: 0.2  # 0.15~0.3, coarse adjustment, larger for higher bandwidth consumption
+  q_level: 3 # 0-99, fine adjustment, larger for higher bandwidth consumption
+
+#channel_type: 'awgn' # 'ofdm_tdl', 'awgn'
+channel_type: 'ofdm_tdl'
+CSNR: 10
+ofdm_tdl:
+  P: 1
+  S: 16
+  K: 12
+  L: 8
+  decay: 4
+  N_pilot: 1
+  is_clip: False
+  clip_ratio: 0.8
+  refine_channel_est: False
+  blind: True  # whether to use channel estimation algorithm, our blind_diffcom supports transmission without channel estimation.
+  channel_est: LMMSE
+  equalization: MMSE
+
+# config diffusion model and testset
+
+# for imgnet
+#model_name: 256x256_diffusion_uncond
+#testset_name: imagenet
+# for ffhq
+model_name: ffhq_10m  # diffcom (djscc) GPU memory ≈ 5404MB
+testset_name: ffhq_demo
+#testset_name: ffhq_test
+
+
+# config hyperparameters for posterior sampling
+
+CSNR_adapt_t_start: False  # whether to accelerate sampling with adaptive initialization, only works for diffcom and hifi_diffcom
+N: 1.0 # scaling factor to adjust the total rounds of reverse sampling steps. More rounds will lead to better performance but slower speed.
+
+diffcom_series:
+  num_train_timesteps: 1000
+  iter_num: 1000
+  save_recon_every: 20
+
+  diffcom:
+    lr_schedule: constant
+    learning_rate: 1.0
+    zeta: 1.0
+    gamma: 0.0
+
+  hifi_diffcom:
+    lr_schedule: constant
+    lr_min: 0.3
+    learning_rate: 1.0
+    zeta: 0.25
+    gamma: 0.25
+
+  blind_diffcom:
+    lr_schedule: constant
+    learning_rate: 1.0
+    zeta: 1.0
+    gamma: 0.0
+    h_lr: 0.2
+
+seed: 22
+gpu_id: 0
+iter_num_U: 1
+batch_size: 1
+save_L: true
+save_E: true
+log_process: false
+
+# default config for diffusion sampling, should be consistent with the training condition of the diffusion model
+ddim_sample: false
+model_output_type: pred_xstart
+skip_type: uniform
+beta_start: 0.0001
+beta_end: 0.02
