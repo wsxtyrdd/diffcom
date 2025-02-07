@@ -8,21 +8,6 @@ paper "[DiffCom: Channel Received Signal is a Natural Condition to Guide Diffusi
 
 Project website: [https://semcomm.github.io/DiffCom/](https://semcomm.github.io/DiffCom/)
 
-## Abstract
-
-End-to-end visual communication systems typically optimize a trade-off between channel bandwidth costs and signal-level
-distortion metrics. However, under challenging physical conditions, this traditional coding and transmission paradigm
-often results in unrealistic reconstructions with perceptible blurring and aliasing artifacts, despite the inclusion of
-perceptual or adversarial losses for optimizing. This issue primarily stems from the receiver’s limited knowledge about
-the underlying data manifold and the use of deterministic decoding mechanisms. 
-To address these limitations, this paper
-introduces DiffCom, a novel end-to-end generative communication paradigm that utilizes off-the-shelf generative priors
-and probabilistic diffusion models for decoding, thereby improving perceptual quality without heavily relying on
-bandwidth costs and received signal quality. Unlike traditional systems that rely on deterministic decoders optimized
-solely for distortion metrics, our DiffCom leverages raw channel-received signal as a fine-grained condition to guide
-stochastic posterior sampling. Our approach ensures that reconstructions remain on the manifold of real data with a
-novel confirming constraint, enhancing the robustness and reliability of the generated outcomes.
-
 ## Overview of the DiffCom system architecture
 
 <img src="imgs/Fig_framework.png"  style="width: 70%;" />
@@ -47,7 +32,7 @@ TODO: check the dependencies
 
 ## Model Download
 
-We provide 3 pre-trained ADJSCC models [Google Drive](https://drive.google.com/drive/folders/1N0EzzxCv1wh6JeFr0g8vkmB0Qj23ozZJ?usp=sharing), please download them and put them in the `_djscc/ckpt` folder.
+We provide 3 pre-trained ADJSCC models in [this link](https://drive.google.com/drive/folders/1N0EzzxCv1wh6JeFr0g8vkmB0Qj23ozZJ?usp=sharing), please download them and put them in the `_djscc/ckpt` folder.
 
 The pre-trained Diffusion models are available at the following links, please download them and put them in the `model_zoo` folder.
 
