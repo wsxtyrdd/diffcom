@@ -1,6 +1,3 @@
------------------
-
-
 |Model|Download link|
 |---|:--:|
 |256x256_diffusion_uncond.pt(ILSVRC 2012 subset of ImageNet)| [download link](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt) |

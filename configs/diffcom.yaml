@@ -12,13 +12,13 @@ djscc:
 #  channel_num: 6
 #  jscc_model_path: '_djscc/ckpt/ADJSCC_C=6.pth.tar'
 
-ntscc:
-  compatible: True
-  eta: 0.2  # 0.15~0.3, coarse adjustment, larger for higher bandwidth consumption
-  q_level: 3 # 0-99, fine adjustment, larger for higher bandwidth consumption
+#ntscc:
+#  compatible: True
+#  eta: 0.2  # 0.15~0.3, coarse adjustment, larger for higher bandwidth consumption
+#  q_level: 3 # 0-99, fine adjustment, larger for higher bandwidth consumption
 
 #channel_type: 'awgn' # 'ofdm_tdl', 'awgn'
-channel_type: 'ofdm_tdl'
+channel_type: 'awgn'
 CSNR: 10
 ofdm_tdl:
   P: 1
@@ -36,10 +36,11 @@ ofdm_tdl:
 
 # config diffusion model and testset
 
-# for imgnet
+# for imagenet dataset
 #model_name: 256x256_diffusion_uncond
 #testset_name: imagenet
-# for ffhq
+
+# for ffhq dataset
 model_name: ffhq_10m  # diffcom (djscc) GPU memory ≈ 5404MB
 testset_name: ffhq_demo
 #testset_name: ffhq_test
